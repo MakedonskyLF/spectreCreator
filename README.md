@@ -5,7 +5,10 @@ Software intended to check how combination of nuclides will positioned on spectr
 # Table of Contents
 
 # Installation
-
+## Imports
+scipy.stats.norm
+datetime.datetime
+datetime.timedelta
 # Usage
 
 # Contributing
