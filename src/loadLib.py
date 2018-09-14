@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-#v.0.0.1
+#v.0.0.2
 
 from datetime import timedelta
 
@@ -18,7 +18,9 @@ tytle line 2
 /"
 
 output dictionary format:
-{nucName:[(probability,energy (kEv)),...]}
+{nuclide name:dict{halfTime:_,
+				   childs:list([Nuclide,portion],...),
+				   gammaLines:list((probability,energy),...)}}
 """
 def readNuclidLibrary(nuclides:str,gammaLines:str):
 	f=open(nuclides,'r')
@@ -26,16 +28,16 @@ def readNuclidLibrary(nuclides:str,gammaLines:str):
 	resLib=dict()
 	for line in f:
 		curLine=line.strip().split('\t')
-		curLine[0]=renderNucName(curLine[0])
 		curLine[6]=curLine[6].strip().lower()
 		htValue=int(float(curLine[5].replace(',','.')))
 		curNuc=dict(halfTime=timedelta(seconds=htValue if (curLine[6] is 's') else 0,
 									   minutes=htValue if (curLine[6] is 'm') else 0,
 									   hours=htValue if (curLine[6] is 'h') else 0,
 									   days=htValue if (curLine[6] is 'd') else min(htValue*365.25,timedelta.max.days)),
-					childs=list(zip(curLine[7:][::2],curLine[7:][1::2])),
+					childs=list(zip(map(renderNucName,curLine[7:][::2]),
+									map(float,curLine[7:][1::2]))),
 					gammaLines=[])
-		resLib[curLine[0]]=curNuc
+		resLib[renderNucName(curLine[0])]=curNuc
 	f.close()
 	f=open(gammaLines,'r') 
 	next(f);next(f); # skip tytle
@@ -57,7 +59,7 @@ Am-242m; Am242m; 242m-Am; 242mAm
 
 result: Am-242m
 """
-def renderNucName(nucName):#tested v.0.0.1
+def renderNucName(nucName):
 	mass=[];name=[];lastIsDigit=False
 	for letter in nucName.strip():
 		if letter.isalpha(): 
