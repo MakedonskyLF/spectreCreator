@@ -4,9 +4,10 @@
 #v.0.0.1
 
 class spectrGenerator:
-	def __init__(self,nucDictionary):
+	def __init__(self,nucDictionary,spectrometer):
 		self._lines=dict()
 		self._dictionary=nucDictionary
+		self._spectrometer=spectrometer
 		
 	"""
 	 Adding nuclide for generation.
@@ -29,3 +30,15 @@ class spectrGenerator:
 							source.copy()+[child[0]])
 		for enLine in nuclide['gammaLines']:
 			self._lines[enLine[1]]=dict(activity=activity*enLine[0],source=source)
+			
+	def addLine(self,energy,activity)
+		self._lines[energy]=dict(activity=activity,source=None)
+
+	def getSpectr(self,spectrometer=None)
+		#generate gausian peaks: channels, limits
+		if spectrometer: spectrometer=self._spectrometer
+		curCalibration=spectrometer.calibration
+		lastValues=map(calibration.getArea,[0]*len(self._lines),self._lines.keys())
+		
+		#output
+		
