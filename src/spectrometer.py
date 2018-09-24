@@ -22,3 +22,10 @@ class calibration:
 		self.cdfKoeff=cdfKoeff
 		self.enToCh=lambda En: enToCh(self,En)
 		self.getArea=lambda En,peakEn: getArea(self,En,peakEn)
+		
+class spectrometer:
+	def __init__ (self,calibration,channels=2**10,minEn=0,maxEn=3000):
+		self.calibration=calibration
+		self.channels=channels
+		self.minEn=minEn
+		self.maxEn=maxEn

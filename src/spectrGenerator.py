@@ -23,22 +23,27 @@ class spectrGenerator:
 			return
 		if not(isinstance(source,list)): source=[source]
 		nuclide=self._dictionary[nuclide]
-		print(source)
 		for child in nuclide['childs']:
 			self.addNuclide(child[0],
 							child[1]*activity,
 							source.copy()+[child[0]])
 		for enLine in nuclide['gammaLines']:
-			self._lines[enLine[1]]=dict(activity=activity*enLine[0],source=source)
+			self._lines[enLine[1]]=dict(activity=activity*enLine[0],source=source) # for same energy will be used only last instance
 			
-	def addLine(self,energy,activity)
+	def addLine(self,energy,activity):
 		self._lines[energy]=dict(activity=activity,source=None)
 
-	def getSpectr(self,spectrometer=None)
-		#generate gausian peaks: channels, limits
-		if spectrometer: spectrometer=self._spectrometer
+	def getSpectr(self,spectrometer=None):
+		if not(spectrometer): spectrometer=self._spectrometer
 		curCalibration=spectrometer.calibration
-		lastValues=map(calibration.getArea,[0]*len(self._lines),self._lines.keys())
-		
-		#output
+		numLines=len(self._lines)
+		res=[0]*spectrometer.channels
+		step=(spectrometer.maxEn-spectrometer.minEn)/spectrometer.channels
+		activities=[line['activity'] for line in self._lines.values()]
+		lastValues=list(map(spectrometer.calibration.getArea,[0]*numLines,self._lines.keys()))
+		for i in range(1,spectrometer.channels):
+			curValues=list(map(spectrometer.calibration.getArea,[i*step]*numLines,self._lines.keys()))
+			res[i-1]=sum([(a-b)*c for a,b,c in zip(curValues,lastValues,activities)])
+			lastValues=curValues
+		return res
 		
