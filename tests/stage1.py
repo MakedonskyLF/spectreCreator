@@ -14,8 +14,10 @@ spectrGen=spectrGenerator(nucLibrary,spectrometer(calibration((0,1/2.92),(35,0.0
 
 spectrGen.addNuclide(['Cs-137','Co-60'],[8000,10000])
 
-spectr1=spectrGen.getSpectr()
+spectr1 = spectrGen.getSpectr()
 
-f=open('test.csv','w')
-f.write('\n'.join([str(ch).replace('.',',') for ch in spectr1]))
+f = open('test.csv', 'w')
+f.write('\n'.join([str(ch).replace('.', ',') for ch in spectr1]))
 f.close()
+
+print('testLine')
