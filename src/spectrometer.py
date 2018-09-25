@@ -7,20 +7,23 @@ from scipy.stats import norm
 
 class calibration:
 
-	def _defEnToChanell(self,En): return self.enCoeff[0]+self.enCoeff[1]*En
+	def enToCh(self,En): return self._enCoeff[0]+self._enCoeff[1]*En
+	def chToEn(self,Ch): return (Ch-self._enCoeff[0])/self._enCoeff[1]
 	
 	def _defGetCumulitiveArea(self,En,peakEn):
-		sigma=self.cdfKoeff[0]+self.cdfKoeff[1]*En
+		sigma=self._cdfKoeff[0]+self._cdfKoeff[1]*En
 		return (norm.cdf(En,peakEn,sigma))
 		
 	def __init__(self,
 				 enCoeff,
 				 cdfKoeff,
-				 enToCh=_defEnToChanell,
+				 enToCh=None,
+				 chToEn=None,
 				 getArea=_defGetCumulitiveArea):
-		self.enCoeff=enCoeff
-		self.cdfKoeff=cdfKoeff
-		self.enToCh=lambda En: enToCh(self,En)
+		self._enCoeff=enCoeff
+		self._cdfKoeff=cdfKoeff
+		if not(enToCh): self.enToCh=lambda En: enToCh(self,En)
+		if not(chToEn): self.enToCh=lambda En: enToCh(self,En)
 		self.getArea=lambda En,peakEn: getArea(self,En,peakEn)
 		
 class spectrometer:

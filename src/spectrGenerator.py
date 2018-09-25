@@ -38,12 +38,15 @@ class spectrGenerator:
 		curCalibration=spectrometer.calibration
 		numLines=len(self._lines)
 		res=[0]*spectrometer.channels
-		step=(spectrometer.maxEn-spectrometer.minEn)/spectrometer.channels
 		activities=[line['activity'] for line in self._lines.values()]
 		lastValues=list(map(spectrometer.calibration.getArea,[0]*numLines,self._lines.keys()))
 		for i in range(1,spectrometer.channels):
-			curValues=list(map(spectrometer.calibration.getArea,[i*step]*numLines,self._lines.keys()))
-			res[i-1]=sum([(a-b)*c for a,b,c in zip(curValues,lastValues,activities)])
+			curValues=list(map(spectrometer.calibration.getArea,
+							   [spectrometer.calibration.chToEn(i)]*numLines,
+							   self._lines.keys()))
+			res[i-1]=sum([(a-b)*c for a,b,c in zip(curValues,
+												   lastValues,
+												   activities)])
 			lastValues=curValues
 		return res
 		
