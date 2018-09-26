@@ -11,11 +11,11 @@ class SpectrGenerator:
 
     """
      Adding nuclide for generation.
-	
-	 nuclide - name or list of names to add
-	
-	 Output - dictionary:{energy:{activity:...,source:[NucName1,...]}}
-	"""
+    
+     nuclide - name or list of names to add
+    
+     Output - dictionary:{energy:{activity:...,source:[NucName1,...]}}
+    """
 
     def addnuclide(self, nuclide: str, activity: float, source: str = None):
         if not source: source = nuclide

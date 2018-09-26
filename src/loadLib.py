@@ -19,8 +19,8 @@ tytle line 2
 
 output dictionary format:
 {nuclide name:dict{halfTime:_,
-				   childs:list([Nuclide,portion],...),
-				   gammaLines:list((probability,energy),...)}}
+                   childs:list([Nuclide,portion],...),
+                   gammaLines:list((probability,energy),...)}}
 """
 
 
