@@ -2,14 +2,14 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkListStore" id="ls_nuclides">
+  <object class="GtkListStore" id="nuclide_list">
     <columns>
       <!-- column-name use -->
       <column type="gboolean"/>
-      <!-- column-name gchararray1 -->
+      <!-- column-name nuclide -->
       <column type="gchararray"/>
       <!-- column-name activity -->
-      <column type="guint"/>
+      <column type="gfloat"/>
     </columns>
     <data>
       <row>
@@ -61,12 +61,15 @@
                 <property name="propagate_natural_width">True</property>
                 <property name="propagate_natural_height">True</property>
                 <child>
-                  <object class="GtkTreeView">
+                  <object class="GtkTreeView" id="tree">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">True</property>
-                    <property name="model">ls_nuclides</property>
+                    <property name="model">nuclide_list</property>
+                    <property name="rules_hint">True</property>
+                    <property name="search_column">1</property>
+                    <property name="show_expanders">False</property>
                     <property name="enable_grid_lines">horizontal</property>
                     <child internal-child="selection">
                       <object class="GtkTreeSelection"/>
@@ -77,7 +80,7 @@
                         <property name="sort_indicator">True</property>
                         <property name="sort_column_id">0</property>
                         <child>
-                          <object class="GtkCellRendererToggle"/>
+                          <object class="GtkCellRendererToggle" id="use_flag"/>
                           <attributes>
                             <attribute name="active">0</attribute>
                           </attributes>
@@ -105,7 +108,9 @@
                         <property name="sort_indicator">True</property>
                         <property name="sort_column_id">2</property>
                         <child>
-                          <object class="GtkCellRendererText"/>
+                          <object class="GtkCellRendererText" id="activity">
+                            <property name="editable">True</property>
+                          </object>
                           <attributes>
                             <attribute name="text">2</attribute>
                           </attributes>
@@ -132,11 +137,13 @@
                       <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="homogeneous">True</property>
                         <child>
-                          <object class="GtkEntry">
+                          <object class="GtkEntry" id="ch_count">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="max_length">6</property>
+                            <property name="text" translatable="yes">1024</property>
                             <property name="caps_lock_warning">False</property>
                             <property name="placeholder_text" translatable="yes">Каналов</property>
                             <property name="input_purpose">number</property>
@@ -148,9 +155,11 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEntry">
+                          <object class="GtkEntry" id="en_min">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0</property>
+                            <property name="caps_lock_warning">False</property>
                             <property name="placeholder_text" translatable="yes">минимальная энергия</property>
                             <property name="input_purpose">number</property>
                           </object>
@@ -161,9 +170,11 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEntry">
+                          <object class="GtkEntry" id="en_max">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">3000</property>
+                            <property name="caps_lock_warning">False</property>
                             <property name="placeholder_text" translatable="yes">максимальная энергия</property>
                           </object>
                           <packing>
@@ -184,22 +195,79 @@
                       <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="homogeneous">True</property>
                         <child>
-                          <object class="GtkEntry">
+                          <object class="GtkEntry" id="ch_a">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0</property>
+                            <property name="caps_lock_warning">False</property>
+                            <property name="placeholder_text" translatable="yes">Канал (смещение)</property>
+                            <property name="input_purpose">number</property>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
+                            <property name="expand">True</property>
                             <property name="fill">True</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <placeholder/>
+                          <object class="GtkEntry" id="ch_b">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0.3425</property>
+                            <property name="caps_lock_warning">False</property>
+                            <property name="placeholder_text" translatable="yes">Канал (наклон)</property>
+                            <property name="input_purpose">number</property>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkListBoxRow">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="homogeneous">True</property>
+                        <child>
+                          <object class="GtkEntry" id="sigma_a">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">35</property>
+                            <property name="caps_lock_warning">False</property>
+                            <property name="placeholder_text" translatable="yes">Сигма (смещение)</property>
+                            <property name="input_purpose">number</property>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
                         </child>
                         <child>
-                          <placeholder/>
+                          <object class="GtkEntry" id="sigma_b">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0.022</property>
+                            <property name="caps_lock_warning">False</property>
+                            <property name="placeholder_text" translatable="yes">Сигма (наклон)</property>
+                            <property name="input_purpose">number</property>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
                         </child>
                       </object>
                     </child>
@@ -223,7 +291,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkToolButton">
+              <object class="GtkToolButton" id="bt_execute">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">__glade_unnamed_5</property>
@@ -236,12 +304,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton">
+              <object class="GtkToolButton" id="bt_save">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">__glade_unnamed_8</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-go-up</property>
+                <property name="stock_id">gtk-floppy</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -253,7 +321,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkFileChooserButton">
+                  <object class="GtkFileChooserButton" id="dict_file">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="action">select-folder</property>
