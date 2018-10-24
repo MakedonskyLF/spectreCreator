@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-
 # v.0.0.1
 
 class SpectrGenerator:

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-
 # v.0.0.2
+
 
 from datetime import timedelta
 
