@@ -8,6 +8,7 @@ class SpectrGenerator:
         self._lines = dict()
         self._dictionary = nucdictionary
         self._spectrometer = spectrometer
+        self.cur_spectr = None
 
     """
      Adding nuclide for generation.
@@ -35,18 +36,23 @@ class SpectrGenerator:
     def addline(self, energy, activity):
         self._lines[energy] = dict(activity=activity, source=None)
 
-    def getspectr(self, spectrometer=None):
+    def _generator(self,spectrometer=None):
         if not spectrometer: spectrometer = self._spectrometer
         num_lines = len(self._lines)
-        res = [0] * spectrometer.channels
+        self.cur_spectr = [0] * spectrometer.channels
         activities = [line['activity'] for line in self._lines.values()]
         last_values = list(map(spectrometer.calibration.getarea, [0] * num_lines, self._lines.keys()))
         for i in range(1, spectrometer.channels):
             cur_values = list(map(spectrometer.calibration.getarea,
                                   [spectrometer.calibration.geten(i)] * num_lines,
                                   self._lines.keys()))
-            res[i - 1] = sum([(a - b) * c for a, b, c in zip(cur_values,
+            self.cur_spectr[i - 1] = sum([(a - b) * c for a, b, c in zip(cur_values,
                                                              last_values,
                                                              activities)])
             last_values = cur_values
-        return res
+            yield i
+
+    def getspectr(self,spectrometer=None):
+        spr_generator=self._generator(spectrometer)
+        for _ in spr_generator: pass
+        return self.cur_spectr

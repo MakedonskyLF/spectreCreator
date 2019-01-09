@@ -7,6 +7,12 @@ from spectrGenerator import *
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from gi.repository import GObject
+
+
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_gtk3cairo import (
+    FigureCanvasGTK3Cairo as FigureCanvas)
 
 nuc_lib = None
 
@@ -47,6 +53,19 @@ def set_activity(_, path, new_text):
 
 
 def execute(_):
+    def execute_step(spectr_generator, progress_bar):
+        step_generator = spectr_generator._generator()
+        for i in step_generator:
+            progress_bar.set_fraction(i / spectr_generator._spectrometer.channels)
+            yield True
+
+        spectr = spectr_generator.cur_spectr
+
+        draw_spectr(spectr)
+        save_spectr('test.csv',spectr)
+        progress_win.hide()
+        yield False
+
     try:
         ch_count = int(builder.get_object('ch_count').get_text())
         en_min = int(builder.get_object('en_min').get_text())
@@ -56,22 +75,39 @@ def execute(_):
         sigma_a = float(builder.get_object('sigma_a').get_text())
         sigma_b = float(builder.get_object('sigma_b').get_text())
     except ValueError:
-        print('ValueError')
         return
-    print('OK')
     spectrGen = SpectrGenerator(nuc_lib,
                                 Spectrometer(Calibration((ch_a, ch_b), (sigma_a, sigma_b)), ch_count, en_min, en_max))
     rootiter = nuclide_list.get_iter_first()
+
     while rootiter is not None:
         if nuclide_list[rootiter][0]:
             spectrGen.addnuclide(nuclide_list[rootiter][1],nuclide_list[rootiter][2])
         rootiter = nuclide_list.iter_next(rootiter)
-    spectr = spectrGen.getspectr()
 
-    f = open('test.csv', 'w')
+    progress_win.show()
+    worker = execute_step(spectrGen,p_bar)
+    GObject.idle_add(next,worker)
+
+
+def draw_spectr(spectr):
+    figure = Figure(figsize=(8, 6))
+    axis = figure.add_subplot(111)
+    axis.plot(spectr)
+
+    canvas = FigureCanvas(figure)  # a Gtk.DrawingArea
+    canvas.set_size_request(800, 600)
+    win = Gtk.Window()
+    win.set_default_size(800, 600)
+    sw = Gtk.ScrolledWindow()
+    win.add(sw)
+    sw.add_with_viewport(canvas)
+    win.show_all()
+
+def save_spectr(f_name,spectr):
+    f = open(f_name, 'w')
     f.write('\n'.join([str(ch).replace('.', ',') for ch in spectr]))
     f.close()
-
 
 builder = Gtk.Builder()
 builder.add_from_file('./spectrGUI.glade')
@@ -79,6 +115,8 @@ window = builder.get_object('mainWin')
 dict_file = builder.get_object('dict_file')
 nuclide_list = builder.get_object('nuclide_list')
 tree = builder.get_object('tree')
+progress_win = builder.get_object('progress_win')
+p_bar=builder.get_object('p_bar')
 
 dict_file.select_filename('../../data')
 load_dict(dict_file)
