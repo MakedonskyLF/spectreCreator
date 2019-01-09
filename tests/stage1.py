@@ -18,4 +18,3 @@ spectr1 = spectrGen.getspectr()
 
 f = open('test.csv', 'w')
 f.write('\n'.join([str(ch).replace('.', ',') for ch in spectr1]))
-f.close()
