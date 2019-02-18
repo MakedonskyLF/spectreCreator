@@ -1,5 +1,9 @@
 #!/usr/bin/python3
 # coding=utf-8
+# for independent run
+import sys
+sys.path.append("../")
+
 import gi
 from loadLib import *
 from spectrometer import *

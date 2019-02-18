@@ -139,50 +139,110 @@
                       <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="homogeneous">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkEntry" id="ch_count">
+                          <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="max_length">6</property>
-                            <property name="text" translatable="yes">1024</property>
-                            <property name="caps_lock_warning">False</property>
-                            <property name="placeholder_text" translatable="yes">Каналов</property>
-                            <property name="input_purpose">number</property>
+                            <property name="can_focus">False</property>
+                            <property name="homogeneous">True</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Каналов</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">E min</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">E max</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
-                            <property name="expand">True</property>
+                            <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEntry" id="en_min">
+                          <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="text" translatable="yes">0</property>
-                            <property name="caps_lock_warning">False</property>
-                            <property name="placeholder_text" translatable="yes">минимальная энергия</property>
-                            <property name="input_purpose">number</property>
+                            <property name="can_focus">False</property>
+                            <property name="homogeneous">True</property>
+                            <child>
+                              <object class="GtkEntry" id="ch_count">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="max_length">6</property>
+                                <property name="text" translatable="yes">1024</property>
+                                <property name="caps_lock_warning">False</property>
+                                <property name="placeholder_text" translatable="yes">Каналов</property>
+                                <property name="input_purpose">number</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="en_min">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="text" translatable="yes">0</property>
+                                <property name="caps_lock_warning">False</property>
+                                <property name="placeholder_text" translatable="yes">минимальная энергия</property>
+                                <property name="input_purpose">number</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="en_max">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="text" translatable="yes">3000</property>
+                                <property name="caps_lock_warning">False</property>
+                                <property name="placeholder_text" translatable="yes">максимальная энергия</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
-                            <property name="expand">True</property>
+                            <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEntry" id="en_max">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="text" translatable="yes">3000</property>
-                            <property name="caps_lock_warning">False</property>
-                            <property name="placeholder_text" translatable="yes">максимальная энергия</property>
-                          </object>
-                          <packing>
-                            <property name="expand">True</property>
-                            <property name="fill">True</property>
-                            <property name="position">2</property>
                           </packing>
                         </child>
                       </object>
@@ -197,33 +257,82 @@
                       <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="homogeneous">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkEntry" id="ch_a">
+                          <object class="GtkLabel">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="text" translatable="yes">0</property>
-                            <property name="caps_lock_warning">False</property>
-                            <property name="placeholder_text" translatable="yes">Канал (смещение)</property>
-                            <property name="input_purpose">number</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Chanell = a + b · En</property>
                           </object>
                           <packing>
-                            <property name="expand">True</property>
+                            <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEntry" id="ch_b">
+                          <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="text" translatable="yes">0.3425</property>
-                            <property name="caps_lock_warning">False</property>
-                            <property name="placeholder_text" translatable="yes">Канал (наклон)</property>
-                            <property name="input_purpose">number</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">a = </property>
+                                <property name="width_chars">4</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="ch_a">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="text" translatable="yes">0</property>
+                                <property name="caps_lock_warning">False</property>
+                                <property name="placeholder_text" translatable="yes">Канал (смещение)</property>
+                                <property name="input_purpose">number</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">b = </property>
+                                <property name="width_chars">4</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="ch_b">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="text" translatable="yes">0.3425</property>
+                                <property name="caps_lock_warning">False</property>
+                                <property name="placeholder_text" translatable="yes">Канал (наклон)</property>
+                                <property name="input_purpose">number</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">3</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
-                            <property name="expand">True</property>
+                            <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
@@ -240,33 +349,82 @@
                       <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="homogeneous">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkEntry" id="sigma_a">
+                          <object class="GtkLabel">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="text" translatable="yes">35</property>
-                            <property name="caps_lock_warning">False</property>
-                            <property name="placeholder_text" translatable="yes">Сигма (смещение)</property>
-                            <property name="input_purpose">number</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">σ = c + d · En</property>
                           </object>
                           <packing>
-                            <property name="expand">True</property>
+                            <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEntry" id="sigma_b">
+                          <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="text" translatable="yes">0.022</property>
-                            <property name="caps_lock_warning">False</property>
-                            <property name="placeholder_text" translatable="yes">Сигма (наклон)</property>
-                            <property name="input_purpose">number</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">c = </property>
+                                <property name="width_chars">4</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="sigma_a">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="text" translatable="yes">35</property>
+                                <property name="caps_lock_warning">False</property>
+                                <property name="placeholder_text" translatable="yes">Сигма (смещение)</property>
+                                <property name="input_purpose">number</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">d = </property>
+                                <property name="width_chars">4</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="sigma_b">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="text" translatable="yes">0.022</property>
+                                <property name="caps_lock_warning">False</property>
+                                <property name="placeholder_text" translatable="yes">Сигма (наклон)</property>
+                                <property name="input_purpose">number</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">3</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
-                            <property name="expand">True</property>
+                            <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
@@ -347,8 +505,6 @@
     </child>
   </object>
   <object class="GtkWindow" id="progress_win">
-    <property name="width_request">300</property>
-    <property name="height_request">30</property>
     <property name="can_focus">False</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
@@ -358,6 +514,9 @@
     <property name="decorated">False</property>
     <property name="deletable">False</property>
     <property name="transient_for">mainWin</property>
+    <child>
+      <placeholder/>
+    </child>
     <child>
       <object class="GtkProgressBar" id="p_bar">
         <property name="visible">True</property>
