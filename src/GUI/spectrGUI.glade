@@ -262,7 +262,7 @@
                           <object class="GtkLabel">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Chanell = a + b · En</property>
+                            <property name="label" translatable="yes">Channel = a + b · En</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>

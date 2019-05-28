@@ -2,21 +2,23 @@
 # coding=utf-8
 # for independent run
 import sys
+
 sys.path.append("../")
 
 import gi
-from loadLib import *
-from spectrometer import *
-from spectrGenerator import *
+import loadLib
+import spectrometer
+import spectrGenerator
+from GUI.spectrGraph import SpectrGraph
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import GObject
 
-
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_gtk3cairo import (
     FigureCanvasGTK3Cairo as FigureCanvas)
+
 
 nuc_lib = None
 
@@ -25,7 +27,7 @@ def load_dict(chooser):
     name = chooser.get_filename()
     if name:
         global nuc_lib
-        nuc_lib = readnuclidlibrary(name + '/NUCLIDES.TXT', name + '/PHOTONS.TXT')
+        nuc_lib = loadLib.readnuclidlibrary(name + '/NUCLIDES.TXT', name + '/PHOTONS.TXT')
         nuclide_list.clear()
         for cur_nuc in nuc_lib:
             nuclide_list.append([False, cur_nuc, 0])
@@ -37,12 +39,12 @@ def switch_use(_, path):
     nuclide_list.set_value(iter, 0, not nuclide_list.get_value(iter, 0))
     if nuclide_list.get_value(iter, 0):
         tree.grab_focus()
-        tree.set_cursor(nuclide_list.get_path(iter), tree.get_column(2), True) #TODO make focus if nuclided used
+        tree.set_cursor(nuclide_list.get_path(iter), tree.get_column(2), True)  # TODO make focus if nuclided used
 
 
 def set_activity(_, path, new_text):
     iter = nuclide_list.get_iter(path)
-    if not (new_text):
+    if not new_text:
         nuclide_list.set_value(iter, 2, 0)
         nuclide_list.set_value(iter, 0, False)
         return
@@ -65,8 +67,8 @@ def execute(_):
 
         spectr = spectr_generator.cur_spectr
 
-        draw_spectr(spectr)
-        save_spectr('test.csv',spectr)
+        draw_spectr(spectr['counts'])
+        save_spectr('test.csv', spectr)
         progress_win.hide()
         yield False
 
@@ -80,18 +82,18 @@ def execute(_):
         sigma_b = float(builder.get_object('sigma_b').get_text())
     except ValueError:
         return
-    spectrGen = SpectrGenerator(nuc_lib,
-                                Spectrometer(Calibration((ch_a, ch_b), (sigma_a, sigma_b)), ch_count, en_min, en_max))
+    spectr_gen = spectrGenerator.SpectrGenerator(nuc_lib,
+                                                 spectrometer.Spectrometer(spectrometer.Calibration((ch_a, ch_b), (sigma_a, sigma_b)), ch_count, en_min, en_max))
     rootiter = nuclide_list.get_iter_first()
 
     while rootiter is not None:
         if nuclide_list[rootiter][0]:
-            spectrGen.addnuclide(nuclide_list[rootiter][1],nuclide_list[rootiter][2])
+            spectr_gen.addnuclide(nuclide_list[rootiter][1], nuclide_list[rootiter][2])
         rootiter = nuclide_list.iter_next(rootiter)
 
     progress_win.show()
-    worker = execute_step(spectrGen,p_bar)
-    GObject.idle_add(next,worker)
+    worker = execute_step(spectr_gen, p_bar)
+    GObject.idle_add(next, worker)
 
 
 def draw_spectr(spectr):
@@ -106,12 +108,18 @@ def draw_spectr(spectr):
     sw = Gtk.ScrolledWindow()
     win.add(sw)
     sw.add_with_viewport(canvas)
-    win.show_all()
+    win.show_all()  # TODO Make good interface (name...)
 
-def save_spectr(f_name,spectr):
+
+def save_spectr(f_name, spectr):
     f = open(f_name, 'w')
     f.write('\n'.join([str(ch).replace('.', ',') for ch in spectr]))
     f.close()
+
+def save_spr(_):
+    w = Gtk.Window()
+    w.add(SpectrGraph())
+    w.show_all()
 
 builder = Gtk.Builder()
 builder.add_from_file('./spectrGUI.glade')
@@ -120,7 +128,7 @@ dict_file = builder.get_object('dict_file')
 nuclide_list = builder.get_object('nuclide_list')
 tree = builder.get_object('tree')
 progress_win = builder.get_object('progress_win')
-p_bar=builder.get_object('p_bar')
+p_bar = builder.get_object('p_bar')
 
 dict_file.select_filename('../../data')
 load_dict(dict_file)
@@ -130,6 +138,7 @@ dict_file.connect('file-set', load_dict)
 builder.get_object('use_flag').connect('toggled', switch_use)
 builder.get_object('activity').connect('edited', set_activity)
 builder.get_object('bt_execute').connect('clicked', execute)
+builder.get_object('bt_save').connect('clicked', save_spr)
 
 window.connect("destroy", Gtk.main_quit)
 window.show_all()

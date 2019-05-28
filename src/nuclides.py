@@ -19,7 +19,6 @@ class Source:
 
     def getactivity(self, todate=datetime.now()):
         return self.activity * self.getdecaycoef(todate - self.date, self.Nuclide[0])
-=======
 #v.0.0.1
 
 from datetime import datetime, timedelta
